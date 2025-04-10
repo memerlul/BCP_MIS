@@ -19,17 +19,17 @@
             </a>
             <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                <a class="nav-link <?= ($current_page == 'manage-accounts.php') ? 'active' : '' ?>" href="manage-accounts.php">
+                <a class="nav-link <?= ($current_page == 'user_management/manage-accounts.php') ? 'active' : '' ?>" href="user_management/manage-accounts.php">
                         <i class="bi bi-circle"></i><span>Manage Accounts</span>
                     </a>
                 </li>
                 <li>
-                <a class="nav-link <?= ($current_page == 'inactive-accounts.php') ? 'active' : '' ?>" href="inactive-accounts.php">
+                <a class="nav-link <?= ($current_page == 'user_management/inactive-accounts.php') ? 'active' : '' ?>" href="user_management/inactive-accounts.php">
                         <i class="bi bi-circle"></i><span>Inactive Accounts</span>
                     </a>
                 </li>
                 <li>
-                <a class="nav-link <?= ($current_page == 'roles-&-permissions.php') ? 'active' : '' ?>" href="roles-&-permissions.php">
+                <a class="nav-link <?= ($current_page == 'user_management/roles-&-permissions.php') ? 'active' : '' ?>" href="user_management/roles-&-permissions.php">
                         <i class="bi bi-circle"></i><span>Roles & Permissions</span>
                     </a>
                 </li>
