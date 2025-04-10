@@ -1231,3 +1231,40 @@ h6 {
   font-size: 13px;
   color: #012970;
 }
+
+/* Sidebar Inactive Link - White Background */
+.sidebar-nav .nav-link {
+  background-color: white;  /* Inactive links have white background */
+  color: #0056b3;  /* Default blue color for text */
+  font-weight: 400;  /* Regular font weight for inactive links */
+  transition: 0.3s;  /* Smooth transition for hover effect */
+}
+
+/* Sidebar Active Link - Light Blue Background */
+.sidebar-nav .nav-link.active {
+  background-color: #cfe2ff; /* Light blue background for active link */
+  color: #012970;  /* Dark text color for active link */
+  font-weight: 600;  /* Bold text for active link */
+}
+
+/* Sidebar Active Link Icon */
+.sidebar-nav .nav-link.active i {
+  color: #012970;  /* Icon color for active link */
+}
+
+/* Sidebar Hover Effect for Inactive Links */
+.sidebar-nav .nav-link:hover {
+  background-color: #f6f9ff;  /* Light hover background */
+  color: #4154f1;  /* Blue text on hover */
+}
+
+/* Sidebar Hover Icon Color */
+.sidebar-nav .nav-link:hover i {
+  color: #4154f1;  /* Icon color on hover */
+}
+
+/* Sidebar Active Link Hover (same as active) */
+.sidebar-nav .nav-link.active:hover {
+  background-color: #cfe2ff;  /* Keep light blue background on hover for active link */
+  color: #012970;  /* Keep dark text color on hover for active link */
+}
