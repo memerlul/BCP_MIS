@@ -1,132 +1,151 @@
+<?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+session_start();
+require 'db_config.php'; // Database connection file
+require 'vendor/autoload.php'; // Add this line to load PHPMailer
+
+// Initialize error message variable
+$error_msg = '';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // Prepare the SQL statement to prevent SQL injection
+    $stmt = $pdo->prepare('SELECT * FROM users WHERE username = :username');
+    $stmt->bindParam(':username', $username);
+    $stmt->execute();
+
+    // Check if the user exists
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user) {
+        if (password_verify($password, $user['password'])) {
+            // Password is correct, generate OTP and store session info
+            $otp = rand(100000, 999999);
+            $_SESSION['otp'] = $otp;
+            $_SESSION['username'] = $username;
+
+            // Generate a unique session ID for this login attempt
+            $session_id = session_id();
+            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+            $ip_address = $_SERVER['REMOTE_ADDR'];
+
+            // Check if the session ID already exists in the database
+            $stmt = $pdo->prepare('SELECT * FROM sessions WHERE session_id = :session_id');
+            $stmt->bindParam(':session_id', $session_id);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                $session_id = session_create_id(); // Regenerate session ID if it already exists
+            }
+
+            // Store the session details in the sessions table
+            $stmt = $pdo->prepare('INSERT INTO sessions (session_id, username, user_agent, ip_address) VALUES (:session_id, :username, :user_agent, :ip_address)');
+            $stmt->bindParam(':session_id', $session_id);
+            $stmt->bindParam(':username', $username);
+            $stmt->bindParam(':user_agent', $user_agent);
+            $stmt->bindParam(':ip_address', $ip_address);
+            $stmt->execute();
+
+            // Send OTP via email using PHPMailer
+            $mail = new PHPMailer(true);
+            try {
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com';
+                $mail->SMTPAuth = true;
+                $mail->Username = 'jiyandelgadogaming@gmail.com';
+                $mail->Password = 'hsgqmkgxunjifegq';
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = 587;
+
+                $mail->setFrom('no-reply@example.com', 'MIS System');
+                $mail->addAddress($user['email']);
+
+                $mail->isHTML(true);
+                $mail->Subject = 'Your 2FA Code';
+                $mail->Body    = "Your 2FA code is: $otp";
+
+                $mail->send();
+                header('Location: verify_otp.php');
+                exit();
+            } catch (Exception $e) {
+                echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            }
+        } else {
+            $error_msg = 'Username or password is invalid.'; // Set the error message
+        }
+    } else {
+        $error_msg = 'Username or password is invalid.'; // Set the error message if user doesn't exist
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-  <title>Pages / Login - NiceAdmin Bootstrap Template</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
-
-  <!-- Favicons -->
-  <link href="assets/logo.png" rel="icon">
-  <link href="assets/logo.png" rel="apple-touch-icon">
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
-  <!-- Jquery & Alertify-->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/css/alertify.css" integrity="sha512-MpdEaY2YQ3EokN6lCD6bnWMl5Gwk7RjBbpKLovlrH6X+DRokrPRAF3zQJl1hZUiLXfo2e9MrOt+udOnHCAmi5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/alertify.min.js" integrity="sha512-JnjG+Wt53GspUQXQhc+c4j8SBERsgJAoHeehagKHlxQN+MtCCmFDghX9/AcbkkNRZptyZU4zC8utK59M5L45Iw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
-  <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
-  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
-
-  <!-- Template Main CSS File -->
-  <link href="assets/css/style.css" rel="stylesheet">
-
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Updated: Apr 20 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Login - MIS</title>
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
 </head>
 
 <body>
-
-  <main>
-    <div class="container">
-
-      <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+    <main>
         <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+            <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                            <div class="d-flex justify-content-center py-4">
+                                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                                    <img src="assets/logo.png" alt="">
+                                    <span class="d-none d-lg-block">MIS</span>
+                                </a>
+                            </div>
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="pt-4 pb-2">
+                                        <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
+                                        <p class="text-center small">Enter your username & password to login</p>
+                                    </div>
+                                    
+                                    <!-- Error message area: displayed if login fails -->
+                                    <?php if ($error_msg): ?>
+                                        <div class="alert alert-danger" role="alert">
+                                            <?php echo $error_msg; ?>
+                                        </div>
+                                    <?php endif; ?>
 
-              <div class="d-flex justify-content-center py-4">
-                <a href="index.html" class="logo d-flex align-items-center w-auto">
-                  <img src="assets/logo.png" alt="">
-                  <span class="d-none d-lg-block">MIS</span>
-                </a>
-              </div><!-- End Logo -->
-
-              <div class="card mb-3">
-
-                <div class="card-body">
-
-                  <div class="pt-4 pb-2">
-                    <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
-                    <p class="text-center small">Enter your username & password to login</p>
-                  </div>
-
-                  <form id="frmLogin" class="row g-3 needs-validation" novalidate>
-
-                    <div class="col-12">
-                      <label for="yourUsername" class="form-label">Username</label>
-                      <div class="input-group has-validation">
-                        <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="text" id="username" name="username"class="form-control" id="yourUsername" required>
-                        <div class="invalid-feedback">Please enter your username.</div>
-                      </div>
+                                    <form method="POST" id="frmLogin" class="row g-3 needs-validation" novalidate>
+                                        <div class="col-12">
+                                            <label for="yourUsername" class="form-label">Username</label>
+                                            <div class="input-group has-validation">
+                                                <span class="input-group-text" id="inputGroupPrepend">@</span>
+                                                <input type="text" id="username" name="username" class="form-control" required>
+                                                <div class="invalid-feedback">Please enter your username.</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="yourPassword" class="form-label">Password</label>
+                                            <input type="password" id="password" name="password" class="form-control" required>
+                                            <div class="invalid-feedback">Please enter your password!</div>
+                                        </div>
+                                        <div class="col-12">
+                                            <button class="btn btn-primary w-100" type="submit">Login</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div><!-- End Card -->
+                        </div>
                     </div>
-
-                    <div class="col-12">
-                      <label for="yourPassword" class="form-label">Password</label>
-                      <input type="password" id="password" name="password" class="form-control" id="yourPassword" required>
-                      <div class="invalid-feedback">Please enter your password!</div>
-                    </div>
-
-                    <div class="col-12">
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe">
-                        <label class="form-check-label" for="rememberMe">Remember me</label>
-                      </div>
-                    </div>
-                    <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">Login</button>
-                    </div>
-                    
-                  </form>
-
                 </div>
-              </div>
-
-             
-
-            </div>
-          </div>
+            </section>
         </div>
-
-      </section>
-
-    </div>
-  </main><!-- End #main -->
-
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Vendor JS Files -->
-  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/chart.js/chart.umd.js"></script>
-  <script src="assets/vendor/echarts/echarts.min.js"></script>
-  <script src="assets/vendor/quill/quill.js"></script>
-  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
-  <script src="assets/vendor/tinymce/tinymce.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
-
-  <!-- Template Main JS File -->
-  <script src="assets/js/main.js"></script>
-  <script src="assets/js/app.js"></script>
+    </main><!-- End #main -->
 </body>
 
 </html>
