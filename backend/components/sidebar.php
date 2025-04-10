@@ -14,39 +14,55 @@
         </li><!-- End Dashboard Nav -->
 
         <li class="nav-item">
-            <a class="nav-link <?= ($current_page == 'usermanagement.php') ? 'active' : '' ?>" href="usermanagement.php">
-                <i class="bi bi-person-fill"></i>
-                <span>User Management</span>
+            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>User management</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
+            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                <a class="nav-link <?= ($current_page == 'manage-accounts.php') ? 'active' : '' ?>" href="manage-accounts.php">
+                        <i class="bi bi-circle"></i><span>Manage Accounts</span>
+                    </a>
+                </li>
+                <li>
+                <a class="nav-link <?= ($current_page == 'inactive-accounts.php') ? 'active' : '' ?>" href="inactive-accounts.php">
+                        <i class="bi bi-circle"></i><span>Inactive Accounts</span>
+                    </a>
+                </li>
+                <li>
+                <a class="nav-link <?= ($current_page == 'roles-&-permissions.php') ? 'active' : '' ?>" href="roles-&-permissions.php">
+                        <i class="bi bi-circle"></i><span>Roles & Permissions</span>
+                    </a>
+                </li>
+                <>
+            </ul>
         </li>
 
         <li class="nav-item">
             <a class="nav-link <?= ($current_page == 'audit.php') ? 'active' : '' ?>" href="audit.php">
-                <i class="bi bi-journal-text"></i>
-                <span>Audit</span>
+                <i class="bi bi-grid"></i>
+                <span>Audit logs</span>
             </a>
-        </li>
+        </li><!-- End Audit logs Nav -->
 
         <li class="nav-item">
             <a class="nav-link <?= ($current_page == 'helpdesk.php') ? 'active' : '' ?>" href="helpdesk.php">
-                <i class="bi bi-telephone-inbound-fill"></i>
+                <i class="bi bi-grid"></i>
                 <span>Help Desk</span>
             </a>
-        </li>
+        </li><!-- End Help Desk Nav -->
 
         <li class="nav-item">
             <a class="nav-link <?= ($current_page == 'report-builder.php') ? 'active' : '' ?>" href="report-builder.php">
-                <i class="bi bi-folder"></i>
+                <i class="bi bi-grid"></i>
                 <span>Report Builder</span>
             </a>
-        </li>
+        </li><!-- End Report Builder Nav -->
 
         <li class="nav-item">
             <a class="nav-link <?= ($current_page == 'student-ledger.php') ? 'active' : '' ?>" href="student-ledger.php">
-                <i class="bi bi-journal-bookmark-fill"></i>
+                <i class="bi bi-grid"></i>
                 <span>Student Ledger</span>
             </a>
-        </li>
-
+        </li><!-- End Student Ledger Nav -->
     </ul>
 </aside>
