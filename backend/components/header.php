@@ -25,13 +25,13 @@
             <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
         </a><!-- End Profile Iamge Icon -->
 
-        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-            <h6>Kevin Anderson</h6>
-            <span>Web Designer</span>
+              <h6>Kevin Anderson</h6>
+              <span>Web Designer</span>
             </li>
             <li>
-            <hr class="dropdown-divider">
+              <hr class="dropdown-divider">
             </li>
 
             <li>
@@ -65,11 +65,12 @@
             </li>
 
             <li>
-            <a class="dropdown-item d-flex align-items-center" href="#">
+            <a class="dropdown-item d-flex align-items-center custom-logout" href="logout.php">
                 <i class="bi bi-box-arrow-right"></i>
-                <a href="logout.php" class="btn btn-danger">Logout</a>
+                <span>Logout</span>
             </a>
             </li>
+
 
         </ul><!-- End Profile Dropdown Items -->
         </li><!-- End Profile Nav -->
