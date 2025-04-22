@@ -21,7 +21,7 @@ if (!isset($_SESSION['username'])) {
         <?php include 'backend/components/header.php'; ?>
 
         <?php include 'backend/components/sidebar.php'; ?>
-        
+
         <main id="main" class="main">
             <div class="pagetitle">
                 <h1>Dashboard</h1>
