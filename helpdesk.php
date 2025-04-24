@@ -1,3 +1,7 @@
+<?php
+require __DIR__ . '/backend/auth.php';
+?>
+
 <?php $page_title = "Help Desk"; ?>
 <!DOCTYPE html>
 <html lang="en">
