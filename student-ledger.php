@@ -1,3 +1,7 @@
+<?php
+require __DIR__ . '/backend/auth.php';
+?>
+
 <?php $page_title = "Student Ledger"; ?>
 <!DOCTYPE html>
 <html lang="en">
