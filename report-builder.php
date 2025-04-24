@@ -1,3 +1,7 @@
+<?php
+require __DIR__ . '/backend/auth.php';
+?>
+
 <?php $page_title = "Report Builder"; ?>
 <!DOCTYPE html>
 <html lang="en">
