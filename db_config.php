@@ -1,14 +1,14 @@
 <?php
-$host = 'localhost';  // Database host
-$dbname = 'school_mis';  // Database name
-$username = 'root';  // Database username
-$password = '';  // Database password
+// db_config.php (in project root)
+$host     = 'localhost';
+$dbname   = 'school_mis';
+$username = 'root';
+$password = '';
 
 try {
-    // Create a PDO instance to connect to the database
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Set error mode to exception
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    echo 'Connection failed: ' . $e->getMessage();
+    die("DB Connection failed: " . $e->getMessage());
 }
-?>
+
