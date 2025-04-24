@@ -1,3 +1,16 @@
+<?php
+// 1) Start (or resume) the session
+session_start();
+
+// 2) If they’re already logged in, redirect them
+if (isset($_SESSION['username'])) {
+    header('Location: Dashboard.php');
+    exit;
+}
+
+// 3) Otherwise fall through to render the landing page
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
