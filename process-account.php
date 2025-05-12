@@ -1,4 +1,5 @@
 <?php
+
 // Include the database configuration file to get the PDO connection
 require_once __DIR__ . '/db_config.php';
 
@@ -43,4 +44,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "<script>alert('Error: Unable to add the account.'); window.history.back();</script>";
     }
 }
+
+// ... after successful insert ...
+
+// Build the spinner URL
+$spinnerUrl = 'spinner.php'
+    . '?redirect=' . urlencode('manage-accounts.php?flash=added')
+    . '&message=' . urlencode('Account added successfully!')
+    . '&delay=1000';
+
+// Redirect to spinner
+header('Location: ' . $spinnerUrl);
+exit;
+
 ?>
