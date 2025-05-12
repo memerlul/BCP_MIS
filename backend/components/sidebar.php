@@ -33,14 +33,14 @@
                         <i class="bi bi-circle"></i><span>Roles & Permissions</span>
                     </a>
                 </li>
-                <>
+
             </ul>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link <?= ($current_page == 'audit.php') ? 'active' : '' ?>" href="audit.php">
+            <a class="nav-link <?= ($current_page == 'audit-trail.php') ? 'active' : '' ?>" href="audit-trail.php">
                 <i class="bi bi-grid"></i>
-                <span>Audit logs</span>
+                <span>Audit Trail</span>
             </a>
         </li><!-- End Audit logs Nav -->
 
