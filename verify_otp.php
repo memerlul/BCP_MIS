@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// Prevent page caching
+// Prevent page caching - Ensure these headers are set before any output
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0"); // HTTP 1.1
 header("Pragma: no-cache"); // HTTP 1.0
 header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Expire in the past
@@ -21,8 +21,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Verify if the OTP entered matches the generated one
     if ($otp == $_SESSION['otp']) {
         // OTP is correct, user is successfully logged in
-        header('Location: Dashboard.php'); // Redirect to Dashboard after OTP is verified
-        exit();
+        $user_role = $_SESSION['role'];  // Fetch user's role from the session
+        if ($user_role == 'admin' || $user_role == 'employee') {
+            header('Location: Dashboard.php');  // Redirect to Admin/Employee Dashboard
+            exit();
+        } elseif ($user_role == 'student') {
+            header('Location: student_portal/index.php');  // Redirect to Student Dashboard
+            exit();
+        } else {
+            header('Location: login.php');  // Default redirect if role is unknown
+            exit();
+        }
     } else {
         $otp_error_msg = 'Invalid OTP. Please try again.'; // Set error message for invalid OTP
     }
