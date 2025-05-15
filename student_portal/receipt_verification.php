@@ -18,7 +18,7 @@ $receipts = [
 </head>
 <body>
   <header>
-    <div class="logo">My University</div>
+    <div class="logo">University</div>
     <nav>
       <ul>
         <li><a href="logout.php">Logout</a></li>
@@ -66,7 +66,7 @@ $receipts = [
   </div>
 
   <footer>
-    <p>&copy; 2025 My University. All rights reserved.</p>
+    <p>&copy; 2025 All rights reserved.</p>
   </footer>
 </body>
 </html>
