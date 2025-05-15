@@ -13,12 +13,14 @@ $search = isset($_GET['search']) ? $_GET['search'] : '';
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10; // Entries per page, default is 10
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <?php require_once __DIR__ . '/backend/components/head.php'; ?>
 </head>
 <body>
+
 <?php include 'backend/components/header.php'; ?>
 
 <?php include 'backend/components/sidebar.php'; ?>
