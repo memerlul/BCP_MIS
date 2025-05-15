@@ -28,6 +28,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['otp'] = $otp;
             $_SESSION['username'] = $username;
 
+            // Store the role in the session (assuming 'role' is a column in the 'users' table)
+            $_SESSION['role'] = $user['role'];  // Store the user's role in the session
+
             // Generate a unique session ID for this login attempt
             $session_id = session_id();
             $user_agent = $_SERVER['HTTP_USER_AGENT'];
@@ -69,13 +72,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $mail->Body    = "Your 2FA code is: $otp";
 
                 $mail->send();
+                
+                // After sending the OTP, redirect to OTP verification page
                 header('Location: verify_otp.php');
-                exit();
+                exit();  // Make sure no further code runs after the redirect
             } catch (Exception $e) {
                 echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
             }
+
         } else {
-            $error_msg = 'Username or password is invalid.'; // Set the error message
+            $error_msg = 'Username or password is invalid.'; // Set the error message if password is incorrect
         }
     } else {
         $error_msg = 'Username or password is invalid.'; // Set the error message if user doesn't exist
