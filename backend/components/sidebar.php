@@ -15,7 +15,7 @@
 
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-menu-button-wide"></i><span>User management</span><i class="bi bi-chevron-down ms-auto"></i>
+                <i class="bx bxs-user-account"></i><span>User management</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
@@ -27,40 +27,34 @@
                 <a class="nav-link <?= ($current_page == 'inactive-accounts.php') ? 'active' : '' ?>" href="inactive-accounts.php">
                         <i class="bi bi-circle"></i><span>Inactive Accounts</span>
                     </a>
-                </li>
-                <li>
-                <a class="nav-link <?= ($current_page == 'roles-&-permissions.php') ? 'active' : '' ?>" href="roles-&-permissions.php">
-                        <i class="bi bi-circle"></i><span>Roles & Permissions</span>
-                    </a>
-                </li>
-
+                </li> 
             </ul>
         </li>
 
         <li class="nav-item">
             <a class="nav-link <?= ($current_page == 'audit-trail.php') ? 'active' : '' ?>" href="audit-trail.php">
-                <i class="bi bi-grid"></i>
+                <i class="bi bi-clipboard-check"></i>
                 <span>Audit Trail</span>
             </a>
         </li><!-- End Audit logs Nav -->
 
         <li class="nav-item">
             <a class="nav-link <?= ($current_page == 'helpdesk.php') ? 'active' : '' ?>" href="helpdesk.php">
-                <i class="bi bi-grid"></i>
+                <i class="bx bxs-user-voice"></i>
                 <span>Help Desk</span>
             </a>
         </li><!-- End Help Desk Nav -->
 
         <li class="nav-item">
             <a class="nav-link <?= ($current_page == 'report-builder.php') ? 'active' : '' ?>" href="report-builder.php">
-                <i class="bi bi-grid"></i>
+                <i class="bx bxs-report"></i>
                 <span>Report Builder</span>
             </a>
         </li><!-- End Report Builder Nav -->
 
         <li class="nav-item">
             <a class="nav-link <?= ($current_page == 'student-ledger.php') ? 'active' : '' ?>" href="student-ledger.php">
-                <i class="bi bi-grid"></i>
+                <i class="ri-bank-card-fill"></i>
                 <span>Student Ledger</span>
             </a>
         </li><!-- End Student Ledger Nav -->
