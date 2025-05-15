@@ -2,6 +2,25 @@
 <?php
 session_start();
 
+// Prevent page caching
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0"); // HTTP 1.1
+header("Pragma: no-cache"); // HTTP 1.0
+header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Expire in the past
+
+// Check if the user is logged in
+if (!isset($_SESSION['username'])) {
+  // If not logged in, redirect to login page
+  header('Location: /../login.php');
+  exit();
+}
+
+// Check if the user is a student (redirect if not)
+if ($_SESSION['role'] !== 'student') {
+  // Redirect users who are not students
+  header('Location: login.php');  // Or redirect to an appropriate page for other roles
+  exit();
+}
+
 // Load student info (replace with real DB query)
 $student = [
     'name'       => 'Juan Dela Cruz',
@@ -23,7 +42,7 @@ $student = [
 </head>
 <body>
   <header>
-    <div class="logo">My University</div>
+    <div class="logo">University</div>
     <nav>
       <ul>
         <li><a href="logout.php">Logout</a></li>
@@ -49,7 +68,7 @@ $student = [
   </div>
 
   <footer>
-    <p>&copy; 2025 My University. All rights reserved.</p>
+    <p>&copy; 2025 All rights reserved.</p>
   </footer>
 </body>
 </html>
