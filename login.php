@@ -23,16 +23,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($user) {
         if (password_verify($password, $user['password'])) {
-
-            // *** INSERT AUDIT TRAIL RECORD FOR LOGIN ***
-            $insertAuditSql = "INSERT INTO audit_trail (target_id, action, created_at) VALUES (:target_id, :action, NOW())";
-            $auditStmt = $pdo->prepare($insertAuditSql);
-            $auditStmt->execute([
-                ':target_id' => $user['id'],
-                ':action' => 'user_login',
-            ]);
-            // *** END AUDIT TRAIL INSERTION ***
-
             // Password is correct, generate OTP and store session info
             $otp = rand(100000, 999999);
             $_SESSION['otp'] = $otp;
@@ -82,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $mail->Body    = "Your 2FA code is: $otp";
 
                 $mail->send();
-
+                
                 // After sending the OTP, redirect to OTP verification page
                 header('Location: verify_otp.php');
                 exit();  // Make sure no further code runs after the redirect
