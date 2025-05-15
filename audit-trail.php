@@ -32,6 +32,8 @@ $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $total = (int)$pdo->query("SELECT COUNT(*) FROM audit_trail")->fetchColumn();
 $pages = ceil($total / $limit);
 
+$page_title = "Audit Trail";
+
 // Layout includes
 include __DIR__ . '/backend/components/head.php';
 include __DIR__ . '/backend/components/header.php';
